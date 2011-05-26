@@ -1,0 +1,19 @@
+These dirty scripts automate svnsync from remote repo to a local file:// repo.
+
+Initial setup:
+edit cfg.sh - set path prefix for data
+./init_repo.sh NAME URL
+./do_sync_svn.sh NAME
+
+Cronjob or whatever:
+./do_sync_svn.sh NAME
+
+Features:
+- ./init_repo.sh creates local repo with a pre-revprop-change hook.
+- ./svnsync_hack.sh reruns svnsync if it has fetched something and then crashed
+  usually it happens on long syncs if a connection is suddenly lost.
+- ./unlock_svn_repo.sh NAME can help if sync crashed badly, removes svn:sync-lock from r0.
+
+Known bugs:
+- svnsync fails to fetch log message/author in broken utf8(like cp1251 with accent characters),
+  so if repo(like svn://anonsvn.mono-project.com/source@136746) has it scripts won't sync past them.
